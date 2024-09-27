@@ -1,0 +1,28 @@
+{% extends "agency/base.html" %}
+
+{% block content %}
+  <h2>Благодарим ви / Thank You, {{ wedding.bride.first_name }} and {{ wedding.groom.first_name }}!</h2>
+  <p>
+    Поздравления, че предприехте първите стъпки в сватбената си организация! 
+
+    Ще се радваме да бъдем част от това вълнуващо пътешествие с вас! / 
+
+    Congratulations on taking the first steps in organizing your wedding!
+    We will be delighted to be part of this wonderful journey with you.
+  </p>
+  <p>
+    Нашият екип ще се свърже с вас скоро, за да обсъдим следващите стъпки. / 
+    Our team will review your information and get in touch with you shortly to discuss the next steps.
+  </p>
+  <p>
+    <strong>Вашите избрани услуги: / Your Selected Services:</strong>
+  </p>
+  <ul>
+    {% for ws in selected_services %}
+      <li>{{ ws.service.name }}</li>
+    {% endfor %}
+  </ul>
+  <p>
+    <strong>Обща стойност: / Total Price:</strong> {{ total_price|floatformat:2 }} BGN без ДДС.
+  </p>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "agency/base.html" %}
+
+{% block content %}
+  <h2>
+    Необходими услуги за {{ wedding.bride.first_name }} & {{ wedding.groom.first_name }} /
+    Select Services for {{ wedding.bride.first_name }} & {{ wedding.groom.first_name }}
+  </h2>
+
+  <form id="services-form" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+      {% for service in services %}
+        <div class="form-check mb-2">
+          <input
+            class="form-check-input service-checkbox"
+            type="checkbox"
+            name="service_{{ service.id }}"
+            id="service_{{ service.id }}"
+            data-price="{{ service.price|floatformat:2 }}"
+            {% if service.weddingservice_set.exists %}checked{% endif %}
+          >
+          <label class="form-check-label" for="service_{{ service.id }}">
+            <strong>{{ service.name }}</strong>
+          </label>
+          <p class="form-text">{{ service.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Total Price Display -->
+    <h3>Калкулация и допълнителни условия / Calculation and additional terms</h3>
+    <h5><strong>Избраните от Вас сватбени услуги ще струват: <span id="total-price-bg">0.00</span> лева без ДДС.</strong></h5>
+    <h5><strong>Your wedding services will cost: <span id="total-price-en">0.00</span> Bulgarian levas (VAT not included).</strong></h5>
+    <p>За сватби извън София, ако се налагат командировки до самата локация, се начислява допълнително транспортен разход и евентуално нощивка. Ако има избрана координация, се начисляват транспортни разходи, нощувка на координатор. В този случай координаторът трябва да бъде с пълно меню на самата сватба.</p>
+    <p>Всички среши със сватбения агент се осъществяват на живо в рамките на София (освен ако не е уговорена командировка) или онлайн в предварително уговорено време, удобно и за двете страни.</p>
+
+    <button type="submit" class="btn btn-primary">Приключи въпросник</button>
+  </form>
+
+  <!-- Include jQuery (Optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+  <script>
+    // JavaScript code to calculate total price
+    $(document).ready(function() {
+      function calculateTotal() {
+        var total = 0;
+        $('.service-checkbox:checked').each(function() {
+          total += parseFloat($(this).data('price'));
+        });
+        $('#total-price-en').text(total.toFixed(2));
+        $('#total-price-bg').text(total.toFixed(2));
+      }
+
+      // Initial calculation in case any services are pre-selected
+      calculateTotal();
+
+      // Recalculate when any checkbox is changed
+      $('.service-checkbox').change(function() {
+        calculateTotal();
+      });
+    });
+  </script>
+{% endblock %}

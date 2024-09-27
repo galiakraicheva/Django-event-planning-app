@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>First Meeting Questionnaire</title>
+</head>
+<body>
+
+    {% extends "agency/base.html" %}
+
+    {% block title %}First Meeting Questionnaire{% endblock %}
+   
+    {% block content %}
+    <h1>Въпросник за първа среща / First Meeting Questionnaire</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Информация за булката / Bride Information</h2>
+        {{ bride_form.as_p }}
+    
+        <h2>Информация за младоженеца / Groom Information</h2>
+        {{ groom_form.as_p }}
+    
+        <h2>Детайли за сватбата / Wedding Details</h2>
+        {{ wedding_form.as_p }}
+    
+        <button type="submit" class="btn btn-primary">Продължи напред</button>
+    </form>
+    {% endblock %}
+</body>
+</html>
